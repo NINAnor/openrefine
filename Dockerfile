@@ -6,7 +6,7 @@ RUN tar x -f /openrefine.tar.gz --strip-components 1
 FROM nixery.dev/bash/coreutils/gnugrep/gnused/procps/curl/which/jdk/gettext
 WORKDIR /opt/openrefine
 COPY --from=build /opt/openrefine .
-COPY entrypoint.sh refine.ini.template .
+COPY entrypoint.sh refine.ini.template LICENSE.txt .
 
 ENV JAVA_HOME=/lib/openjdk
 EXPOSE 3333/TCP
