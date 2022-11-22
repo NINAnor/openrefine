@@ -7,6 +7,13 @@ services:
     environment:
       REFINE_MEMORY: 2000M
       REFINE_MIN_MEMORY: 2000M
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl --fail http://localhost:3333 || exit 1
+      timeout: 10s
+      interval: 1m0s
+      retries: 5
     image: ghcr.io/ninanor/openrefine:main
     networks:
       default: null
