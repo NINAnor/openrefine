@@ -1,0 +1,26 @@
+name: openrefine
+services:
+  openrefine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      REFINE_MEMORY: 2000M
+      REFINE_MIN_MEMORY: 2000M
+    image: ghcr.io/ninanor/openrefine:main
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 3333
+      published: "3333"
+      protocol: tcp
+    volumes:
+    - type: bind
+      source: ./workspace
+      target: /workspace
+      bind:
+        create_host_path: true
+networks:
+  default:
+    name: openrefine_default
