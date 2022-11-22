@@ -9,4 +9,4 @@ COPY --from=build /opt/openrefine .
 
 ENV JAVA_HOME=/lib/openjdk
 EXPOSE 3333/TCP
-CMD ["/opt/openrefine/refine", "-i", "0.0.0.0", "run"]
+CMD ["/opt/openrefine/refine", "-i", "0.0.0.0", "-d", "/workspace", "run"]
