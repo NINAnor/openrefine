@@ -3,7 +3,6 @@ name: Docker
 on:
   push:
     branches: [ 'main' ]
-    tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ 'main' ]
 
@@ -14,16 +13,22 @@ env:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - build_args: version=3.7-beta2
+            tag: 3.7-beta2
+    permissions:
+      contents: read
+      packages: write
     steps:
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       -
         name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       -
         name: Login to registry
         if: github.event_name != 'pull_request'
@@ -38,10 +43,14 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: ${{ matrix.tag }}
       -
-        name: Build and push
+        name: Build and push container
         uses: docker/build-push-action@v3
         with:
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           push: ${{ github.event_name != 'pull_request' }}
+          build-args: ${{ matrix.build_args }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

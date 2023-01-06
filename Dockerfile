@@ -1,5 +1,6 @@
 FROM nixery.dev/busybox AS build
-ADD https://oss.sonatype.org/service/local/artifact/maven/content?r=releases&g=org.openrefine&a=openrefine&v=3.6.2&c=linux&p=tar.gz openrefine.tar.gz
+ARG VERSION=3.7-beta2
+ADD https://github.com/OpenRefine/OpenRefine/releases/download/$VERSION/openrefine-linux-$VERSION.tar.gz openrefine.tar.gz
 WORKDIR /opt/openrefine
 RUN tar x -f /openrefine.tar.gz --strip-components 1
 
