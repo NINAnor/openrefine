@@ -1,5 +1,5 @@
 FROM nixery.dev/busybox AS build
-ARG VERSION=3.7-beta2
+ARG VERSION=3.7.0
 ADD https://github.com/OpenRefine/OpenRefine/releases/download/$VERSION/openrefine-linux-$VERSION.tar.gz openrefine.tar.gz
 WORKDIR /opt/openrefine
 RUN tar x -f /openrefine.tar.gz --strip-components 1

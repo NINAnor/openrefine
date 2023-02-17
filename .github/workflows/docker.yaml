@@ -17,8 +17,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - build_args: version=3.7-beta2
-            tag: 3.7-beta2
+          - build_args: version=3.7.0
+            tag: 3.7.0
     permissions:
       contents: read
       packages: write
