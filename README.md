@@ -15,8 +15,8 @@ Before building the new image, some operation could be needed.
 This is if the new version of OpenRefine has a different `refine.ini` configuration file.
 
 ```bash
-version="3.6.2"
-curl -L "https://oss.sonatype.org/service/local/artifact/maven/content?r=releases&g=org.openrefine&a=openrefine&v=${version}&c=linux&p=tar.gz" |
+version="3.7.2"
+curl -L "https://github.com/OpenRefine/OpenRefine/releases/download/3.7.2/openrefine-linux-${version}.tar.gz" |
     tar xz --wildcards '*/refine.ini' --strip-components 1
 mv refine.ini refine.ini.template
 ```

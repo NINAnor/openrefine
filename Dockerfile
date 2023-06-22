@@ -1,15 +1,12 @@
-FROM nixery.dev/busybox AS build
-ARG VERSION=3.7.0
-ADD https://github.com/OpenRefine/OpenRefine/releases/download/$VERSION/openrefine-linux-$VERSION.tar.gz openrefine.tar.gz
-WORKDIR /opt/openrefine
-RUN tar x -f /openrefine.tar.gz --strip-components 1
+FROM quay.io/centos/centos:stream9-minimal as base
+ARG VERSION=3.7.2
 
-FROM nixery.dev/bash/coreutils/gnugrep/gnused/procps/curl/which/jdk/gettext
+RUN microdnf install --assumeyes --setopt=install_weak_deps=0 java-17-openjdk-headless procps which gettext tar gzip
 WORKDIR /opt/openrefine
-COPY --from=build /opt/openrefine .
+RUN curl -L https://github.com/OpenRefine/OpenRefine/releases/download/$VERSION/openrefine-linux-$VERSION.tar.gz | \
+    tar xz --strip-components 1
 COPY entrypoint.sh refine.ini.template LICENSE.txt .
 
-ENV JAVA_HOME=/lib/openjdk
 EXPOSE 3333/TCP
 
 ENV REFINE_MEMORY=1400M
