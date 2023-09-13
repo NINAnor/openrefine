@@ -1,5 +1,5 @@
 FROM quay.io/centos/centos:stream9-minimal as base
-ARG VERSION=3.7.2
+ARG VERSION=3.7.5
 
 RUN microdnf install --assumeyes --setopt=install_weak_deps=0 java-17-openjdk-headless procps which gettext tar gzip
 WORKDIR /opt/openrefine
