@@ -18,7 +18,9 @@ RUN --mount=type=cache,target=/root/.npm \
 FROM registry.opensuse.org/opensuse/bci/openjdk:latest
 RUN zypper --non-interactive install gettext-tools
 WORKDIR /opt/openrefine
-COPY --from=backend /opt/openrefine .
+COPY --from=backend /opt/openrefine/server server/
+COPY --from=backend /opt/openrefine/main main/
+COPY --from=backend /opt/openrefine/refine .
 COPY --from=frontend /opt/openrefine/main/webapp/modules main/webapp/modules
 COPY entrypoint.sh refine.ini.template ./
 
