@@ -1,14 +1,28 @@
-FROM quay.io/centos/centos:stream9-minimal as base
+FROM registry.opensuse.org/opensuse/git:latest AS sources
 ARG VERSION=3.7.5
-
-RUN microdnf install --assumeyes --setopt=install_weak_deps=0 java-17-openjdk-headless procps which gettext tar gzip
 WORKDIR /opt/openrefine
-RUN curl -L https://github.com/OpenRefine/OpenRefine/releases/download/$VERSION/openrefine-linux-$VERSION.tar.gz | \
-    tar xz --strip-components 1
-COPY entrypoint.sh refine.ini.template LICENSE.txt .
+RUN git clone https://github.com/OpenRefine/OpenRefine.git --depth 1 --branch $VERSION .
+
+FROM registry.opensuse.org/opensuse/bci/openjdk-devel:latest AS backend
+WORKDIR /opt/openrefine
+COPY --from=sources /opt/openrefine .
+RUN --mount=type=cache,target=/root/.m2 \
+    mvn -B package -P linux -DskipTests=true -Dmaven.antrun.skip=true
+
+FROM registry.opensuse.org/opensuse/bci/nodejs:latest AS frontend
+WORKDIR /opt/openrefine/main/webapp
+COPY --from=sources /opt/openrefine/main/webapp .
+RUN --mount=type=cache,target=/root/.npm \
+    npm install
+
+FROM registry.opensuse.org/opensuse/bci/openjdk:latest
+RUN zypper --non-interactive install gettext-tools
+WORKDIR /opt/openrefine
+COPY --from=backend /opt/openrefine .
+COPY --from=frontend /opt/openrefine/main/webapp/modules main/webapp/modules
+COPY entrypoint.sh refine.ini.template ./
 
 EXPOSE 3333/TCP
-
 ENV REFINE_MEMORY=1400M
 ENV REFINE_MIN_MEMORY=1400M
 

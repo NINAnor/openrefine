@@ -17,8 +17,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - build_args: version=3.7.5
-            tag: 3.7.5
+          - version: master
+          - version: 4.0
+          - version: 3.7
+          - version: 3.7.5
+          - version: 3.6.2
+          - version: 3.5.2
     permissions:
       contents: read
       packages: write
@@ -43,7 +47,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: ${{ matrix.tag }}
+          tags: ${{ matrix.version }}
       -
         name: Build and push container
         uses: docker/build-push-action@v3
@@ -51,6 +55,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           push: ${{ github.event_name != 'pull_request' }}
-          build-args: ${{ matrix.build_args }}
+          build-args: version=${{ matrix.version }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
