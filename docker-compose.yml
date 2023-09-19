@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        VERSION: master
     environment:
       REFINE_MEMORY: 2000M
       REFINE_MIN_MEMORY: 2000M
@@ -17,7 +19,7 @@ services:
       timeout: 10s
       interval: 1m0s
       retries: 5
-    image: ghcr.io/ninanor/openrefine:main
+    image: ghcr.io/ninanor/openrefine:master
     networks:
       default: null
     ports:
