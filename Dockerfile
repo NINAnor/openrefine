@@ -30,7 +30,7 @@ EXPOSE 3333/TCP
 ENV REFINE_MEMORY=1400M
 ENV REFINE_MIN_MEMORY=1400M
 
-HEALTHCHECK CMD curl -sSf -o /dev/null http://localhost:3333
+HEALTHCHECK --start-period=10s CMD curl -sSf -o /dev/null http://localhost:3333
 
 ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
 CMD ["/opt/openrefine/refine", "-i", "0.0.0.0", "-d", "/workspace", "run"]
