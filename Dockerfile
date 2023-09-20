@@ -7,7 +7,7 @@ FROM registry.opensuse.org/opensuse/bci/openjdk-devel:latest AS backend
 WORKDIR /opt/openrefine
 COPY --from=sources /opt/openrefine .
 RUN --mount=type=cache,target=/root/.m2 \
-    mvn -B package -P linux -DskipTests=true -Dmaven.antrun.skip=true
+    mvn -B process-resources compile test-compile
 
 FROM registry.opensuse.org/opensuse/bci/nodejs:latest AS frontend
 WORKDIR /opt/openrefine/main/webapp
