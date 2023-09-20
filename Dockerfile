@@ -22,8 +22,8 @@ RUN zypper --non-interactive install gettext-tools which
 WORKDIR /opt/openrefine
 COPY --from=backend /opt/openrefine/server server/
 COPY --from=backend /opt/openrefine/main main/
-COPY --from=backend /opt/openrefine/refine .
 COPY --from=frontend /opt/openrefine/main/webapp/modules main/webapp/modules
+COPY --from=backend /opt/openrefine/refine .
 COPY entrypoint.sh refine.ini.template ./
 
 EXPOSE 3333/TCP
