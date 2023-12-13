@@ -22,8 +22,8 @@ jobs:
           - version: "master"
           - version: "4.0"
           - version: "3.7"
-          - version: "3.7.5"
-          - version: "3.6.2"
+          - version: "3.7.7"
+
     permissions:
       contents: read
       packages: write
